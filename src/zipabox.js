@@ -236,6 +236,54 @@ function Connect_FN(ON_AFTERCONNECT) {
 
 	sequenty.run(SeqFunc);
 }
+function DeviceToString() {
+	var retval = this.name.yellow.bold;
+
+	switch(this.name){
+		case "scenes" :
+		case "thermostats" :
+			for (var uuid in this.json) {
+				var devicejson = this.json[uuid];
+				retval += "\r\n\t" + uuid.green + "(" + devicejson.name.bold + ")";
+
+				if (this.name == "thermostats")
+				{
+					for(var endpoint in devicejson.endpoints)
+					{
+						var device_endpoint = devicejson.endpoints[endpoint];
+						retval += "\r\n\t\t" + endpoint.yellow.bold + " : " + device_endpoint.uuid.green + "(" + device_endpoint.name.bold + ")";
+					}
+				}
+			}
+			break;
+		default :
+			for (var uuid in this.json) {
+		            var devicejson = this.json[uuid];
+
+		            for (var attr in devicejson.attributes) {
+		                var attribute = devicejson.attributes[attr];
+		                if (typeof (attribute.value) != "undefined") {
+		                    var attrname = attribute.name;
+		                    if (typeof (attribute.definition) != "undefined")
+		                        attrname = attribute.definition.name;
+
+				    var attrval = ""+attribute.value;
+				    if (attrval == "true"){
+				    	attrval = attrval.green;
+				    }
+				    else{
+				    	if (attrval == "false"){
+						attrval = attrval.red;
+					}
+				    }
+		                    retval += "\r\n\t" + (uuid.green + "(" + devicejson.name.bold + ")" + " - " + attrname + "(" + attr.bold + ")" + " = " + attrval.bold);
+		                }
+		            }
+		        }
+	}
+
+	return retval;
+}
 
 function ZipaboxToString() {
         var retval = this.name.yellow.bold + "\r\n";
