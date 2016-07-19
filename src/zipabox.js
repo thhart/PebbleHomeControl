@@ -236,3 +236,28 @@ function Connect_FN(ON_AFTERCONNECT) {
 
 	sequenty.run(SeqFunc);
 }
+
+function ZipaboxToString() {
+        var retval = this.name.yellow.bold + "\r\n";
+
+	var jszipabox = zipabox.devices[0].json;
+        //writelog("######### ".blue + "ZIPABOX Informations".bold + " #########".blue);
+	retval += "######### ".blue + "ZIPABOX Informations".bold + " #########".blue + "\r\n";
+        for (var key in jszipabox)
+        {
+                var value = "" + jszipabox[key];
+
+                if (key == "online"){
+                        if (jszipabox[key])
+                                retval += "\t" + key + ": " + value.green.bold + "\r\n"; //writelog("\t" + key + ": " + value.green.bold);
+                        else
+                                retval += "\t" + key + ": " + value.red.bold + "\r\n"; //writelog("\t" + key + ": " + value.red.bold);
+                }
+                else
+                        retval += "\t" + key + ": " + value.yellow.bold + "\r\n"; //writelog("\t" + key + ": " + value.yellow.bold);
+        }
+        //writelog("########################################".blue);
+	retval += "########################################".blue;
+
+	return retval;
+}
